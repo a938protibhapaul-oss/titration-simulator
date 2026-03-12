@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Titration Simulator</title>
+
+<style>
+
+body{
+font-family:Arial;
+text-align:center;
+background:#f4f4f4;
+}
+
+img{
+width:420px;
+margin-top:20px;
+}
+
+button{
+padding:10px 20px;
+margin:10px;
+font-size:16px;
+background:#ff6f9c;
+border:none;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+button:hover{
+background:#ff3f7f;
+}
+
+select{
+padding:5px;
+font-size:15px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h2>Acid–Base Titration Simulator</h2>
+
+<label>Pipette Solution:</label>
+
+<select id="solution">
+<option value="oxalic">Oxalic Acid (0.1 N)</option>
+<option value="hcl">HCl</option>
+</select>
+
+<p>Volume of titrate: <b>10 mL</b></p>
+<p>Titrant: <b>NaOH</b></p>
+
+<!-- Initial image -->
+<img id="setupImage" src="m.png">
+
+<br>
+
+<button onclick="start()">START</button>
+<button onclick="stop()">STOP</button>
+<button onclick="reset()">RESET</button>
+
+<h3 id="reading">NaOH Volume: 0.0 mL</h3>
+
+<script>
+
+let volume = 0
+let running = false
+let endpoint = 2.0
+
+let frame = 0
+let pink = false
+let started = false
+
+let clearFrames = ["clear1.png","clear2.png"]
+let pinkFrames = ["pink1.png","pink2.png"]
+
+/* animation loop */
+
+setInterval(function(){
+
+if(!started) return
+
+let img = document.getElementById("setupImage")
+
+if(pink){
+img.src = pinkFrames[frame]
+}else{
+img.src = clearFrames[frame]
+}
+
+frame++
+
+if(frame >= 2){
+frame = 0
+}
+
+},300)
+
+/* volume increase */
+
+setInterval(function(){
+
+if(running){
+
+volume += 0.1
+
+document.getElementById("reading").innerText =
+"NaOH Volume: " + volume.toFixed(1) + " mL"
+
+if(volume >= endpoint){
+pink = true
+}
+
+}
+
+},1000)
+
+/* start experiment */
+
+function start(){
+
+started = true
+running = true
+
+volume = 0
+pink = false
+
+let solution =
+document.getElementById("solution").value
+
+if(solution == "oxalic"){
+endpoint = 2.0
+}
+
+if(solution == "hcl"){
+endpoint = 10.0
+}
+
+document.getElementById("reading").innerText =
+"NaOH Volume: 0.0 mL"
+
+}
+
+/* stop */
+
+function stop(){
+
+running = false
+
+alert("Volume of Naoh solution required: "
++ volume.toFixed(1) + " mL")
+
+}
+
+/* reset */
+
+function reset(){
+
+running = false
+started = false
+volume = 0
+pink = false
+
+document.getElementById("setupImage").src = "m.png"
+
+document.getElementById("reading").innerText =
+"NaOH Volume: 0.0 mL"
+
+}
+
+</script>
+
+</body>
+</html>

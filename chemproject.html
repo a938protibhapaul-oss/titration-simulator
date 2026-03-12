@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Virtual Titration Lab</title>
+
+<style>
+
+body{
+background:white;
+text-align:center;
+font-family:Arial;
+}
+
+/* Button */
+
+button{
+padding:12px 25px;
+font-size:18px;
+background-color:rgb(237,95,145);
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:hover{
+transform:scale(1.05);
+background:#ff6f9c;
+}
+
+/* Avatar floating animation */
+
+.avatar{
+margin-top:20px;
+animation:float 2s infinite ease-in-out;
+}
+
+@keyframes float{
+
+0%{transform:translateY(0px);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(0px);}
+
+}
+
+/* Speech bubble */
+
+.bubble{
+position:relative;
+display:inline-block;
+background:#ffd6e7;
+padding:18px;
+border-radius:12px;
+margin-top:10px;
+max-width:420px;
+box-shadow:0px 4px 12px rgba(0,0,0,0.2);
+}
+
+.bubble:after{
+content:"";
+position:absolute;
+left:-20px;
+top:30px;
+border-width:10px;
+border-style:solid;
+border-color:transparent #ffd6e7 transparent transparent;
+}
+
+/* Hide guide section initially */
+
+#experiment{
+display:none;
+margin-top:40px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+
+<!-- INTRO PAGE -->
+
+<div id="intro">
+
+<h1>Virtual Chemistry Lab</h1>
+
+<p>Welcome to the titration experiment.</p>
+
+<br>
+
+<button onclick="showGuide()">Start Experiment</button>
+
+</div>
+
+
+<!-- AVATAR GUIDE PAGE -->
+
+<div id="experiment">
+
+<h1>Virtual Titration Lab</h1>
+
+<img src="avatar.png" width="220" class="avatar">
+
+<div class="bubble">
+    <span id="dialogue"></span>
+<br><br>
+<button onclick="nextLine()">Next</button>
+
+<script>
+
+let lines = [
+"Hello! 👋 I will guide you through the titration experiment.",
+"Before we begin, let’s quickly understand what titration is.",
+"Titration is a method used to determine the strength of a solution.",
+"In an acid–base titration, an acid reacts with a base.",
+"NaOH from the burette is slowly added to the solution in the conical flask.",
+"Phenolphthalein changes from colourless to very light pink.",
+"This colour change indicates the end point of the titration."
+];
+
+let index = 2;
+
+document.getElementById("dialogue").innerHTML =
+lines[0] + "<br><br>" + lines[1];
+
+function nextLine(){
+
+if(index < lines.length){
+
+document.getElementById("dialogue").innerHTML =
+lines[index] + "<br><br>" + (lines[index+1] || "");
+
+index += 2;
+
+}
+else{
+
+document.getElementById("procedure").style.display = "block";
+document.querySelector("button").style.display = "none";
+
+}
+
+}
+
+</script>
+</div>
+
+<br><br>
+
+<div id="procedure" style="display:none;">
+
+<h2>Procedure</h2>
+
+<ul style="max-width:700px;margin:auto;text-align:left;font-size:16px">
+
+<li><b>Standardization of NaOH:</b></li>
+<li>Pipette out 10 mL of 0.1 N oxalic acid into a conical flask.</li>
+<li>Add one drop of phenolphthalein indicator.</li>
+<li>Titrate with NaOH solution from the burette.</li>
+<li>Stop when the solution turns very light pink.</li>
+<li>Note the final burette reading.</li>
+
+<br>
+
+<li><b>Estimation of HCl:</b></li>
+<li>Pipette out 10 mL of HCl solution into a conical flask.</li>
+<li>Add one drop of phenolphthalein indicator.</li>
+<li>Titrate with the standardized NaOH solution.</li>
+<li>Stop when a very light pink colour appears.</li>
+<li>Note the final burette reading.</li>
+
+<br>
+
+<li><b>Calculation:</b></li>
+<li>Use the relation <b>V₁S₁ = V₂S₂</b>.</li>
+<li>V₁ = volume of acid</li>
+<li>S₁ = strength of acid</li>
+<li>V₂ = volume of base</li>
+<li>S₂ = strength of base</li>
+
+</ul>
+
+<br><br>
+
+<button onclick="startsimulation()">Begin Procedure</button>
+
+</div>
+
+
+
+<script>
+
+/* Show avatar guide */
+
+function showGuide(){
+
+document.getElementById("intro").style.display="none";
+document.getElementById("experiment").style.display="block";
+
+}
+
+
+/* Open simulator */
+
+function startsimulation(){
+
+window.location.href="simulation.html";
+
+}
+
+</script>
+
+
+</body>
+</html>
