@@ -59,7 +59,9 @@ font-size:15px;
 <img id="setupImage" src="m.png">
 
 <br>
-
+<p>Speed of titrant: <span id="speedValue">1</span></p>
+<input type="range" id="speed" min="1" max="4" value="1">
+<p style="font-size:13px;">1 = slow • 4 = fast</p>
 <button onclick="start()">START</button>
 <button onclick="stop()">STOP</button>
 <button onclick="reset()">RESET</button>
@@ -78,6 +80,9 @@ let started = false
 
 let clearFrames = ["clear1.png","clear2.png"]
 let pinkFrames = ["pink1.png","pink2.png"]
+document.getElementById("speed").oninput = function() {
+document.getElementById("speedValue").innerText = this.value
+}
 
 /* animation loop */
 
@@ -102,23 +107,24 @@ frame = 0
 },300)
 
 /* volume increase */
-
 setInterval(function(){
 
 if(running){
 
-volume += 0.1
-
-document.getElementById("reading").innerText =
-"NaOH Volume: " + volume.toFixed(1) + " mL"
+let speed = document.getElementById("speed").value * 0.1
+volume += speed
 
 if(volume >= endpoint){
 pink = true
 }
 
+document.getElementById("reading").innerText =
+"NaOH Volume: " + volume.toFixed(1) + " mL"
+
 }
 
 },1000)
+
 
 /* start experiment */
 
